@@ -166,6 +166,7 @@ class AuditLog {
     bool setType(AuditLogType audit_type);
 
     bool init(std::string *error);
+    bool reopen(std::string *error);
     bool close();
 
     bool saveIfRelevant(Transaction *transaction);
