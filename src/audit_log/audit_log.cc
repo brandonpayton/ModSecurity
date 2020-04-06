@@ -27,7 +27,6 @@
 #include "src/audit_log/writer/serial.h"
 #include "src/audit_log/writer/writer.h"
 #include "src/utils/regex.h"
-#include "src/utils/shared_files.h"
 
 #define PARTS_CONSTAINS(a, c) \
     if (new_parts.find(toupper(a)) != std::string::npos \
@@ -374,21 +373,10 @@ bool AuditLog::merge(AuditLog *from, std::string *error) {
 }
 
 bool AuditLog::reopen(std::string *error) {
-    bool reopenSuccess1 = true;
-    bool reopenSuccess2 = true;
-
-    // NOTE: We could delegate this responsibility to the writer interface,
-    // but today, since the Serial and Parallel writers actually reference
-    // the log paths maintained by this instance, we might as well go the
-    // simpler path and handle reopen here.
-    if (!m_path1.empty()) {
-        reopenSuccess1 = utils::SharedFiles::getInstance().reopen(m_path1, error);
+    if (m_writer) {
+        return m_writer->reopen(error);
     }
-    if (!m_path2.empty()) {
-        reopenSuccess2 = utils::SharedFiles::getInstance().reopen(m_path2, error);
-    }
-
-    return reopenSuccess1 && reopenSuccess2;
+    return true;
 }
 
 
