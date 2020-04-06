@@ -374,20 +374,21 @@ bool AuditLog::merge(AuditLog *from, std::string *error) {
 }
 
 bool AuditLog::reopen(std::string *error) {
-    bool success = true;
+    bool reopenSuccess1 = true;
+    bool reopenSuccess2 = true;
 
     // NOTE: We could delegate this responsibility to the writer interface,
     // but today, since the Serial and Parallel writers actually reference
     // the log paths maintained by this instance, we might as well go the
     // simpler path and handle reopen here.
     if (!m_path1.empty()) {
-        success = utils::SharedFiles::getInstance().reopen(m_path1, error);
+        reopenSuccess1 = utils::SharedFiles::getInstance().reopen(m_path1, error);
     }
-    if (success && !m_path2.empty()) {
-        success = utils::SharedFiles::getInstance().reopen(m_path2, error);
+    if (!m_path2.empty()) {
+        reopenSuccess2 = utils::SharedFiles::getInstance().reopen(m_path2, error);
     }
 
-    return success;
+    return reopenSuccess1 && reopenSuccess2;
 }
 
 
