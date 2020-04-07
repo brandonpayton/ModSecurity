@@ -373,7 +373,7 @@ bool AuditLog::merge(AuditLog *from, std::string *error) {
 }
 
 bool AuditLog::reopen(std::string *error) {
-    if (m_writer) {
+    if (m_writer != NULL) {
         return m_writer->reopen(error);
     }
     return true;
