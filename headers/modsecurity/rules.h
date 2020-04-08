@@ -104,6 +104,7 @@ int msc_rules_add_remote(Rules *rules, const char *key, const char *uri,
 int msc_rules_add_file(Rules *rules, const char *file, const char **error);
 int msc_rules_add(Rules *rules, const char *plain_rules, const char **error);
 int msc_rules_cleanup(Rules *rules);
+int msc_rules_reopen_audit_log(Rules *rules, const char **error);
 
 #ifdef __cplusplus
 }
